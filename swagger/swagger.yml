@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: User API
+  description: API for user identification
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/identify:
+    post:
+      summary: Endpoint to identify a user.
+      description: Endpoint to identify a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Email of the user.
+                phoneNumber:
+                  type: string
+                  description: Phone number of the user.
+                  pattern: ^\d{10}$
+              required:
+                - email
+                - phoneNumber
+      responses:
+        "200":
+          description: Successfully registered user.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResObjProp"
+        "400":
+          description: Bad request, missing or invalid parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Any response for 400 status code.
+components:
+  schemas:
+    ResObjProp:
+      type: object
+      properties:
+        primaryContatctId:
+          type: number
+          description: Primary contact ID.
+        emails:
+          type: array
+          items:
+            type: string
+          description: Array of emails.
+        phoneNumbers:
+          type: array
+          items:
+            type: string
+          description: Array of phone numbers.
+        secondaryContactIds:
+          type: array
+          items:
+            type: number
+          description: Array of secondary contact IDs.

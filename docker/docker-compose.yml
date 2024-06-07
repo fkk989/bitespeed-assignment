@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    volumes:
+      - my-db:/var/lib/postgresql/data
+
+  server:
+    image: fkk989/bitespeed-assignment
+    depends_on:
+      - postgres
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres/postgres?schema=public
+      PORT: 3000
+    volumes:
+      - ../:/home/bitespeed-assignment/
+
+volumes:
+  my-db:
+    driver: local
